@@ -50,9 +50,12 @@ class _PriceScreenState extends State<PriceScreen> {
   String bitcoinValue='?';
   String ethValue='?';
   String ltcValue='?';
+  bool isWait =false;
 
   void fetchData() async {
+    isWait=true;
       Map<String,String> data=await CoinData().getData(selectedCurrency);
+      isWait=false;
       setState(() {
         bitcoinValue=data['BTC'];
         ethValue=data['ETH'];
@@ -80,9 +83,12 @@ class _PriceScreenState extends State<PriceScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children : <Widget>[
-              cryptoCard(value: bitcoinValue, selectedCurrency: selectedCurrency, cryptoCurrency : 'BTC'),
-              cryptoCard(value: ethValue, selectedCurrency: selectedCurrency, cryptoCurrency : 'ETH'),
-              cryptoCard(value: ltcValue, selectedCurrency: selectedCurrency, cryptoCurrency : 'LTC'),
+              cryptoCard(value: isWait ? '?' : bitcoinValue,
+                  selectedCurrency: selectedCurrency, cryptoCurrency : 'BTC'),
+              cryptoCard(value: isWait ? '?' : ethValue,
+                  selectedCurrency: selectedCurrency, cryptoCurrency : 'ETH'),
+              cryptoCard(value: isWait ? '?' : ltcValue,
+                  selectedCurrency: selectedCurrency, cryptoCurrency : 'LTC'),
           ],
           ),
           Container(
